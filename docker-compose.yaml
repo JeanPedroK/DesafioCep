@@ -1,0 +1,29 @@
+
+services:
+  api:
+    image: webdevops/php-apache-dev:8.3-alpine
+    ports:
+      - "8080:80"
+    volumes:
+      - ./src/api:/app
+    environment: 
+      DB_HOST: db
+      DB_USER: root
+      DB_PASSWORD : root
+      DB_DATABASE: testecep
+
+  web:
+    image: cepfinder:dev
+    build: .
+    ports:
+      - "9090:80"
+
+  db:
+    image: mysql:5.7
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: testecep
+    ports:
+      - "3306:3306"
