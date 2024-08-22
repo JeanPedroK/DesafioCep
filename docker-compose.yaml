@@ -1,23 +1,4 @@
-
 services:
-  api:
-    image: webdevops/php-apache-dev:8.3-alpine
-    ports:
-      - "8080:80"
-    volumes:
-      - ./src/api:/app
-    environment: 
-      DB_HOST: db
-      DB_USER: root
-      DB_PASSWORD : root
-      DB_DATABASE: testecep
-
-  web:
-    image: cepfinder:dev
-    build: .
-    ports:
-      - "9090:80"
-
   db:
     image: mysql:5.7
     command: --default-authentication-plugin=mysql_native_password
@@ -27,3 +8,30 @@ services:
       MYSQL_DATABASE: testecep
     ports:
       - "3306:3306"
+
+  api:
+    build:
+      context: .
+      dockerfile: api.Dockerfile
+    image: cepfinder/api:v1
+    ports:
+      - "8080:80"
+    volumes:
+      - ./src/api:/app
+    entrypoint: [ "/bin/sh", "/app/entrypoint.sh" ]
+
+    depends_on:
+      - db
+    environment:
+      DB_HOST: db
+      DB_USER: root
+      DB_PASSWORD: root
+      DB_DATABASE: testecep
+
+  web:
+    image: cepfinder/web:v1
+    depends_on:
+      - api
+    build: .
+    ports:
+      - "9090:80"

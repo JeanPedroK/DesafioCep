@@ -25,9 +25,10 @@
     <div class="mt-3 upload-section">
       <div class="input-group justify-content-center">
         <label class="inputLabel" for='selecao-arquivo'>Importar CSV</label>
-        <input id='selecao-arquivo' ref='selecao-arquivo' type="file" class="form-control" accept=".csv" @change="handleFileUpload">
+        <input id='selecao-arquivo' ref='selecao-arquivo' type="file" class="form-control" accept=".csv"
+          @change="handleFileUpload">
         <button type="submit" class="btn btn-success" @click="uploadFile"
-         :disabled="!isEnableUpload" ><span>Upload</span></button>
+          :disabled="!isEnableUpload"><span>Upload</span></button>
       </div>
       <div v-if="uploading" class="progress mt-3">
         <div class="progress-bar" role="progressbar" :style="{ width: `${progress}%` }" :aria-valuenow="progress"
@@ -148,7 +149,7 @@ export default {
   },
 
   methods: {
-    handleFileUpload(event){
+    handleFileUpload(event) {
       const file = event.target.files[0];
       if (file) {
         this.enableUpload = true
@@ -298,7 +299,7 @@ export default {
     async calculateDistance() {
       try {
 
-        this.calculateDistanceAPI(this.address1.cep, this.address2.cep);
+        await this.calculateDistanceAPI(this.address1.cep, this.address2.cep);
 
         this.getBanco();
 
